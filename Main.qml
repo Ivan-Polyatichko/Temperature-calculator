@@ -4,13 +4,9 @@ import QtQuick.Layouts
 
 ApplicationWindow {
     width: 400
-    height: 250
+    height: 270
     visible: true
     title: "Temperature Converter"
-
-    function format(value) {
-        return (typeof value === "number") ? value.toFixed(2) : ""
-    }
 
     ColumnLayout {
         anchors.centerIn: parent
@@ -22,18 +18,17 @@ ApplicationWindow {
 
             TextField {
                 id: celsiusField
-                text: format(model.celsius)
-                onEditingFinished: controller.updateFromCelsius(celsiusField.text)
+                text: model.celsius.toFixed(2)
+                onTextEdited: {
+                    controller.updateFromCelsius(text)
+                }
                 validator: RegularExpressionValidator {
                     regularExpression: /^-?\d*\.?\d*$/
                 }
                 background: Rectangle {
                     radius: 4
+                    border.color: parseFloat(celsiusField.text) >= -273.15 ? "black" : "red"
                     border.width: 1
-                    border.color: {
-                        let v = parseFloat(celsiusField.text)
-                        return (!isNaN(v) && v >= -273.15) ? "black" : "red"
-                    }
                 }
             }
         }
@@ -44,18 +39,17 @@ ApplicationWindow {
 
             TextField {
                 id: fahrenheitField
-                text: format(model.fahrenheit)
-                onEditingFinished: controller.updateFromFahrenheit(fahrenheitField.text)
+                text: model.fahrenheit.toFixed(2)
+                onTextEdited: {
+                    controller.updateFromFahrenheit(text)
+                }
                 validator: RegularExpressionValidator {
                     regularExpression: /^-?\d*\.?\d*$/
                 }
                 background: Rectangle {
                     radius: 4
+                    border.color: !isNaN(parseFloat(fahrenheitField.text)) ? "black" : "red"
                     border.width: 1
-                    border.color: {
-                        let v = parseFloat(fahrenheitField.text)
-                        return !isNaN(v) ? "black" : "red"
-                    }
                 }
             }
         }
@@ -66,18 +60,17 @@ ApplicationWindow {
 
             TextField {
                 id: kelvinField
-                text: format(model.kelvin)
-                onEditingFinished: controller.updateFromKelvin(kelvinField.text)
+                text: model.kelvin.toFixed(2)
+                onTextEdited: {
+                    controller.updateFromKelvin(text)
+                }
                 validator: RegularExpressionValidator {
                     regularExpression: /^-?\d*\.?\d*$/
                 }
                 background: Rectangle {
                     radius: 4
+                    border.color: parseFloat(kelvinField.text) >= 0 ? "black" : "red"
                     border.width: 1
-                    border.color: {
-                        let v = parseFloat(kelvinField.text)
-                        return (!isNaN(v) && v >= 0.0) ? "black" : "red"
-                    }
                 }
             }
         }
@@ -85,8 +78,17 @@ ApplicationWindow {
 
     Connections {
         target: model
-        function onCelsiusChanged()    { celsiusField.text = format(model.celsius) }
-        function onFahrenheitChanged() { fahrenheitField.text = format(model.fahrenheit) }
-        function onKelvinChanged()     { kelvinField.text = format(model.kelvin) }
+
+        function onCelsiusChanged() {
+            celsiusField.text = model.celsius.toFixed(2)
+        }
+
+        function onFahrenheitChanged() {
+            fahrenheitField.text = model.fahrenheit.toFixed(2)
+        }
+
+        function onKelvinChanged() {
+            kelvinField.text = model.kelvin.toFixed(2)
+        }
     }
 }
