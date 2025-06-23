@@ -18,7 +18,7 @@ ApplicationWindow {
 
             TextField {
                 id: celsiusField
-                text: model.celsius.toFixed(2)
+                text: model.celsius
                 onTextEdited: {
                     controller.updateFromCelsius(text)
                 }
@@ -39,7 +39,7 @@ ApplicationWindow {
 
             TextField {
                 id: fahrenheitField
-                text: model.fahrenheit.toFixed(2)
+                text: model.fahrenheit
                 onTextEdited: {
                     controller.updateFromFahrenheit(text)
                 }
@@ -60,7 +60,7 @@ ApplicationWindow {
 
             TextField {
                 id: kelvinField
-                text: model.kelvin.toFixed(2)
+                text: model.kelvin
                 onTextEdited: {
                     controller.updateFromKelvin(text)
                 }
@@ -73,22 +73,6 @@ ApplicationWindow {
                     border.width: 1
                 }
             }
-        }
-    }
-
-    Connections {
-        target: model
-
-        function onCelsiusChanged() {
-            celsiusField.text = model.celsius.toFixed(2)
-        }
-
-        function onFahrenheitChanged() {
-            fahrenheitField.text = model.fahrenheit.toFixed(2)
-        }
-
-        function onKelvinChanged() {
-            kelvinField.text = model.kelvin.toFixed(2)
         }
     }
 }
